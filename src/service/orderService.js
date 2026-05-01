@@ -17,12 +17,18 @@ class OrderService {
     return await order.populate('items.pizza user');
   }
 
-  async getOrdersByUser(userId) {
-    return await Order.find({ user: userId }).populate('items.pizza');
+  async getOrdersByUser(userId, limit = 10, offset = 0) {
+    return await Order.find({ user: userId })
+      .populate('items.pizza')
+      .limit(limit)
+      .skip(offset);
   }
 
-  async getAllOrders() {
-    return await Order.find().populate('items.pizza user');
+  async getAllOrders(limit = 10, offset = 0) {
+    return await Order.find()
+      .populate('items.pizza user')
+      .limit(limit)
+      .skip(offset);
   }
 
   async getOrderById(id) {

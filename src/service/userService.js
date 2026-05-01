@@ -1,5 +1,4 @@
 const User = require('../model/User');
-const jwt = require('jsonwebtoken');
 
 class UserService {
   async register(userData) {
@@ -15,17 +14,15 @@ class UserService {
     }
   }
 
-  async login(email, password) {
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user || !(await user.comparePassword(password))) {
-      throw new Error('Credenciais inválidas');
-    }
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    return { user, token };
-  }
-
   async getUserById(id) {
     return await User.findById(id).select('-password');
+  }
+
+  async getAllUsers(limit, offset) {
+    return await User.find()
+      .select('-password')
+      .limit(limit)
+      .skip(offset);
   }
 
   async updateUser(id, updateData) {
@@ -34,6 +31,38 @@ class UserService {
 
   async deleteUser(id) {
     return await User.findByIdAndDelete(id);
+  }
+
+  async addAddress(userId, addressData) {
+    return await User.findOneAndUpdate(
+      { _id: userId },
+      { $push: { addresses: addressData } },
+      { new: true, rawResult: true }
+    );
+  }
+
+  async removeAddress(userId, addressId) {
+    return await User.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { addresses: { _id: addressId } } },
+      { new: true, rawResult: true }
+    );
+  }
+
+  async addFavoritePizza(userId, pizzaData) {
+    return await User.findOneAndUpdate(
+      { _id: userId },
+      { $push: { favoritePizzas: { _id: pizzaData._id } } },
+      { new: true, rawResult: true }
+    );
+  }
+
+  async removeFavoritePizza(userId, pizzaId) {
+    return await User.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { favoritePizzas: { _id: pizzaId } } },
+      { new: true, rawResult: true }
+    );
   }
 }
 

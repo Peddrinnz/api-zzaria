@@ -7,8 +7,10 @@ class PizzaService {
     return pizza;
   }
 
-  async getAllPizzas() {
-    return await Pizza.find({ available: true });
+  async getAllPizzas(limit = 10, offset = 0) {
+    return await Pizza.find({ available: true })
+      .limit(limit)
+      .skip(offset);
   }
 
   async getPizzaById(id) {
