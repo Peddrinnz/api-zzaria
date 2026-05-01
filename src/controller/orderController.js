@@ -12,7 +12,8 @@ class OrderController {
 
   async getUserOrders(req, res) {
     try {
-      const orders = await orderService.getOrdersByUser(req.user._id);
+      const { limit, offset } = req.pagination;
+      const orders = await orderService.getOrdersByUser(req.user._id, limit, offset);
       res.json(orders);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -21,7 +22,8 @@ class OrderController {
 
   async getAllOrders(req, res) {
     try {
-      const orders = await orderService.getAllOrders();
+      const { limit, offset } = req.pagination;
+      const orders = await orderService.getAllOrders(limit, offset);
       res.json(orders);
     } catch (error) {
       res.status(500).json({ message: error.message });

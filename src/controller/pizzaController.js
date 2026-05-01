@@ -12,7 +12,8 @@ class PizzaController {
 
   async getAllPizzas(req, res) {
     try {
-      const pizzas = await pizzaService.getAllPizzas();
+      const { limit, offset } = req.pagination;
+      const pizzas = await pizzaService.getAllPizzas(limit, offset);
       res.json(pizzas);
     } catch (error) {
       res.status(500).json({ message: error.message });
