@@ -9,12 +9,9 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Conexão com MongoDB
 connectMongoDB().then(() => {
-  // Swagger configuração
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  // Rotas
   const userRoutes = require('./src/router/userRoutes');
   const pizzaRoutes = require('./src/router/pizzaRoutes');
   const orderRoutes = require('./src/router/orderRoutes');
