@@ -18,7 +18,7 @@ class PizzaService {
   }
 
   async updatePizza(id, updateData) {
-    return await Pizza.findByIdAndUpdate(id, updateData, { new: true });
+    return await Pizza.findByIdAndUpdate(id, updateData, { returnDocument: 'after' });
   }
 
   async deletePizza(id) {

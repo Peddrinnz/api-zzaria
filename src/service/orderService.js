@@ -36,7 +36,7 @@ class OrderService {
   }
 
   async updateOrderStatus(id, status) {
-    return await Order.findByIdAndUpdate(id, { status }, { new: true }).populate('items.pizza user');
+    return await Order.findByIdAndUpdate(id, { status }, { returnDocument: 'after' }).populate('items.pizza user');
   }
 
   async deleteOrder(id) {

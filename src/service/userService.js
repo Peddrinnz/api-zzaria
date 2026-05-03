@@ -26,7 +26,7 @@ class UserService {
   }
 
   async updateUser(id, updateData) {
-    return await User.findByIdAndUpdate(id, updateData, { new: true }).select('-password');
+    return await User.findByIdAndUpdate(id, updateData, { returnDocument: 'after' }).select('-password');
   }
 
   async deleteUser(id) {
