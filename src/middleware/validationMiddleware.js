@@ -98,11 +98,42 @@ const validateOrder = (req, res, next) => {
   });
 };
 
+// Validação de Endereço do usuário
+const validateAddress = (req, res, next) => {
+  const errors = [];
+
+  if (!req.body.street || req.body.street.trim() === '') {
+    errors.push('street');
+  }
+
+  if (req.body.number === undefined || req.body.number === null || Number(req.body.number) <= 0) {
+    errors.push('number (deve ser um número maior que 0)');
+  }
+
+  if (!req.body.city || req.body.city.trim() === '') {
+    errors.push('city');
+  }
+
+  if (!req.body.zipCode || req.body.zipCode.trim() === '') {
+    errors.push('zipCode');
+  }
+
+  if (errors.length === 0) {
+    return next();
+  }
+
+  return res.status(400).send({
+    message: errors.length > 1
+      ? `Os campos ${errors.join(', ')} precisam ser preenchidos corretamente!`
+      : `O campo ${errors[0]} precisa ser preenchido corretamente!`
+  });
+};
+
 // Validação de ID válido
 const validateId = (req, res, next) => {
-  const { id } = req.params;
+  const ids = Object.values(req.params);
 
-  if (!Types.ObjectId.isValid(id)) {
+  if (ids.length === 0 || !ids.every((value) => Types.ObjectId.isValid(value))) {
     return res.status(400).send({
       message: 'ID inválido! Deve ser um ObjectId válido do MongoDB'
     });
@@ -138,6 +169,7 @@ module.exports = {
   validateUser,
   validatePizza,
   validateOrder,
+  validateAddress,
   validateId,
   validateLogin
 };

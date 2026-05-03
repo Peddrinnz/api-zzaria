@@ -37,7 +37,7 @@ class UserService {
     return await User.findOneAndUpdate(
       { _id: userId },
       { $push: { addresses: addressData } },
-      { new: true, rawResult: true }
+      { returnDocument: 'after' }
     );
   }
 
@@ -45,7 +45,7 @@ class UserService {
     return await User.findOneAndUpdate(
       { _id: userId },
       { $pull: { addresses: { _id: addressId } } },
-      { new: true, rawResult: true }
+      { returnDocument: 'after' }
     );
   }
 
@@ -53,7 +53,7 @@ class UserService {
     return await User.findOneAndUpdate(
       { _id: userId },
       { $push: { favoritePizzas: { _id: pizzaData._id } } },
-      { new: true, rawResult: true }
+      { returnDocument: 'after' }
     );
   }
 
@@ -61,7 +61,7 @@ class UserService {
     return await User.findOneAndUpdate(
       { _id: userId },
       { $pull: { favoritePizzas: { _id: pizzaId } } },
-      { new: true, rawResult: true }
+      { returnDocument: 'after' }
     );
   }
 }

@@ -2,7 +2,7 @@ const express = require('express');
 const userController = require('../controller/userController');
 const authController = require('../controller/authController');
 const authMiddleware = require('../middleware/authMiddleware');
-const { validateUser, validateId, validateLogin } = require('../middleware/validationMiddleware');
+const { validateUser, validateAddress, validateId, validateLogin } = require('../middleware/validationMiddleware');
 const paginationMiddleware = require('../middleware/paginationMiddleware');
 
 const router = express.Router();
@@ -16,7 +16,7 @@ router.delete('/profile', authMiddleware, userController.deleteAccount);
 
 router.get('/', authMiddleware, paginationMiddleware, userController.getAllUsers);
 
-router.post('/addresses', authMiddleware, userController.addAddress);
+router.post('/addresses', authMiddleware, validateAddress, userController.addAddress);
 router.delete('/addresses/:addressId', authMiddleware, validateId, userController.removeAddress);
 
 router.post('/favorites/:pizzaId', authMiddleware, validateId, userController.addFavoritePizza);

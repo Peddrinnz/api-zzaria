@@ -49,9 +49,9 @@ class UserController {
 
   async addAddress(req, res) {
     try {
-      const result = await userService.addAddress(req.user._id, req.body);
-      if (result.value) {
-        res.status(201).json({ message: 'Endereço adicionado com sucesso', user: result.value });
+      const user = await userService.addAddress(req.user._id, req.body);
+      if (user) {
+        res.status(201).json({ message: 'Endereço adicionado com sucesso', user });
       } else {
         res.status(400).json({ message: 'Erro ao adicionar endereço' });
       }
@@ -62,8 +62,8 @@ class UserController {
 
   async removeAddress(req, res) {
     try {
-      const result = await userService.removeAddress(req.user._id, req.params.addressId);
-      if (result.value) {
+      const user = await userService.removeAddress(req.user._id, req.params.addressId);
+      if (user) {
         res.json({ message: 'Endereço removido com sucesso' });
       } else {
         res.status(404).json({ message: 'Endereço não encontrado' });
@@ -75,9 +75,9 @@ class UserController {
 
   async addFavoritePizza(req, res) {
     try {
-      const result = await userService.addFavoritePizza(req.user._id, req.body);
-      if (result.value) {
-        res.status(201).json({ message: 'Pizza adicionada aos favoritos', user: result.value });
+      const user = await userService.addFavoritePizza(req.user._id, { _id: req.params.pizzaId });
+      if (user) {
+        res.status(201).json({ message: 'Pizza adicionada aos favoritos', user });
       } else {
         res.status(400).json({ message: 'Erro ao adicionar pizza aos favoritos' });
       }
@@ -88,8 +88,8 @@ class UserController {
 
   async removeFavoritePizza(req, res) {
     try {
-      const result = await userService.removeFavoritePizza(req.user._id, req.params.pizzaId);
-      if (result.value) {
+      const user = await userService.removeFavoritePizza(req.user._id, req.params.pizzaId);
+      if (user) {
         res.json({ message: 'Pizza removida dos favoritos' });
       } else {
         res.status(404).json({ message: 'Pizza não encontrada nos favoritos' });
